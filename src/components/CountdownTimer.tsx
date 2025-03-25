@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface ICounterProps {
   targetDate: number;
@@ -13,6 +13,8 @@ interface TimeLeft {
 }
 
 const CountdownTimer = ({ targetDate, sale }: ICounterProps) => {
+  const [currentTargetDate, setCurrentTargetDate] = useState(targetDate);
+  const intervalRef = useRef(targetDate - Date.now());
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
     days: 0,
     hours: 0,
@@ -20,22 +22,25 @@ const CountdownTimer = ({ targetDate, sale }: ICounterProps) => {
     seconds: 0,
   });
 
+  // Update interval and target when prop changes
+  useEffect(() => {
+    intervalRef.current = targetDate - Date.now();
+    setCurrentTargetDate(targetDate);
+  }, [targetDate]);
+
   useEffect(() => {
     const timerInterval = setInterval(() => {
-      const now = new Date().getTime();
-      const difference = targetDate - now;
+      const now = Date.now();
+      const difference = currentTargetDate - now;
 
       if (difference > 0) {
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-
         const hours = Math.floor(
           (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
         );
-
         const minutes = Math.floor(
           (difference % (1000 * 60 * 60)) / (1000 * 60)
         );
-
         const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
         setTimeLeft({
@@ -45,12 +50,47 @@ const CountdownTimer = ({ targetDate, sale }: ICounterProps) => {
           seconds: Math.floor(seconds),
         });
       } else {
-        clearInterval(timerInterval);
+        // Schedule next countdown when current finishes
+        const interval = Math.abs(intervalRef.current);
+        const nextTargetDate = now + interval;
+        setCurrentTargetDate(nextTargetDate);
       }
     }, 1000);
 
     return () => clearInterval(timerInterval);
-  }, [targetDate]);
+  }, [currentTargetDate]);
+
+  // useEffect(() => {
+  //   const timerInterval = setInterval(() => {
+  //     const now = new Date().getTime();
+  //     const difference = targetDate - now;
+
+  //     if (difference > 0) {
+  //       const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+
+  //       const hours = Math.floor(
+  //         (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+  //       );
+
+  //       const minutes = Math.floor(
+  //         (difference % (1000 * 60 * 60)) / (1000 * 60)
+  //       );
+
+  //       const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+  //       setTimeLeft({
+  //         days,
+  //         hours,
+  //         minutes,
+  //         seconds: Math.floor(seconds),
+  //       });
+  //     } else {
+  //       clearInterval(timerInterval);
+  //     }
+  //   }, 1000);
+
+  //   return () => clearInterval(timerInterval);
+  // }, [targetDate]);
 
   const padNumber = (num: number) => {
     return num.toString().padStart(2, "0");
