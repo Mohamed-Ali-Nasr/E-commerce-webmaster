@@ -1,0 +1,18 @@
+export { default as vector } from "./Vector.png";
+export { default as appStore } from "./AppStore.png";
+export { default as googlePlay } from "./GooglePlay.png";
+export { default as qrCode } from "./Qr Code.png";
+export { default as apple } from "./1200px-Apple_gray_logo 1.png";
+export { default as hero } from "./hero_endframe__cvklg0xk3w6e_large 2.png";
+export { default as music } from "./music.png";
+export { default as playstation } from "./ps5-slim-goedkope-playstation_large 1.png";
+export { default as echo } from "./69-694768_amazon-echo-png-clipart-transparent-amazon-echo-png 1.png";
+export { default as gucci } from "./652e82cd70aa6522dd785109a455904c.png";
+export { default as woman } from "./attractive-woman-wearing-hat-posing-black-background 1.png";
+export { default as beatsnoop } from "./dl.beatsnoop 1.png";
+export { default as googleIcon } from "./Icon-Google.png";
+export { default as payments } from "./payments.png";
+export { default as about } from "./about.png";
+export { default as staff_1 } from "./staff_1.png";
+export { default as staff_2 } from "./staff_2.png";
+export { default as staff_3 } from "./staff_3.png";
